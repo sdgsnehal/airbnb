@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import {AiOutlineCloseCircle} from "react-icons/ai"
+import { AiOutlineCloseCircle } from "react-icons/ai";
 import Button from "../Button";
 interface ModalProps {
   isOpen: boolean;
@@ -12,7 +12,7 @@ interface ModalProps {
   actionLabel: string;
   disabled?: boolean;
   secondaryAction?: () => void;
-  secondaryLabel?: string;
+  secondaryActionLabel?: string;
 }
 
 const Modal: React.FC<ModalProps> = ({
@@ -25,7 +25,7 @@ const Modal: React.FC<ModalProps> = ({
   actionLabel,
   disabled,
   secondaryAction,
-  secondaryLabel,
+  secondaryActionLabel,
 }) => {
   const [showModal, setShowModal] = useState(isOpen);
   useEffect(() => {
@@ -83,33 +83,43 @@ const Modal: React.FC<ModalProps> = ({
                     lg:h-auto
                     md:h-auto"
         >
-            <div className={`translate duration-300 h-full ${showModal?'translate-y-0':'transalate-y-full'} ${showModal?'opacity-100':'opacity-0'}`}>
-                <div className="translate h-full lg:h-auto md:h-auto border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
-                    {/* Header */}
-                    <div className="flex items-center p-6 rounded-t justify-center relative border-b-[1px]">
-                        <button
-                        onClick={handleClose}
-                        className="p-1 border-0 hover:opacity-70 transition absolute left-9">
-                            <AiOutlineCloseCircle size={18}/>
-                        </button>
-                        <div className="text-lg font-semibold">
-                            {title}
-                        </div>
-                    </div>
-                    {/*Body  */}
-                <div className="relative p-6 flex-auto">
-                    {body}
+          <div
+            className={`translate duration-300 h-full ${
+              showModal ? "translate-y-0" : "transalate-y-full"
+            } ${showModal ? "opacity-100" : "opacity-0"}`}
+          >
+            <div className="translate h-full lg:h-auto md:h-auto border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+              {/* Header */}
+              <div className="flex items-center p-6 rounded-t justify-center relative border-b-[1px]">
+                <button
+                  onClick={handleClose}
+                  className="p-1 border-0 hover:opacity-70 transition absolute left-9"
+                >
+                  <AiOutlineCloseCircle size={18} />
+                </button>
+                <div className="text-lg font-semibold">{title}</div>
+              </div>
+              {/*Body  */}
+              <div className="relative p-6 flex-auto">{body}</div>
+              {/* footer */}
+              <div className="flex flex-col gap-2 p-6">
+                <div className="flex flex-row items-center gap-4 w-full">
+                {secondaryAction && secondaryActionLabel &&(
+                <Button
+                    outline
+                    disabled={disabled}
+                    label={secondaryActionLabel}
+                    onClick={handleSecondaryAction}
+                  />)}
+                  <Button
+                    disabled={disabled}
+                    label={actionLabel}
+                    onClick={handleSubmit}
+                  />
                 </div>
-                {/* footer */}
-                <div className="flex flex-col gap-2 p-6">
-                    <div className="flex flex-row items-center gap-4 w-full">
-                        <Button/>
-                    </div>
-
-                </div>
-                </div>
-
+              </div>
             </div>
+          </div>
         </div>
       </div>
     </>
