@@ -1,22 +1,28 @@
-
-'use client'
-import {AiOutlineMenu} from "react-icons/ai"
-import Avatar from "../Avatar"
-import { useState ,useCallback} from "react"
-import MenuItem from "./MenuItem"
-import useRegisterModal from "../hooks/useRegisterModal"
-const UserMenu = () => {
+"use client";
+import { AiOutlineMenu } from "react-icons/ai";
+import Avatar from "../Avatar";
+import { useState, useCallback } from "react";
+import MenuItem from "./MenuItem";
+import useRegisterModal from "../hooks/useRegisterModal";
+import useLoginModal from "../hooks/useLoginModal";
+import { User } from "@prisma/client";
+import { signOut } from "next-auth/react";
+interface UserMenuProps {
+  currentUser?: User | null;
+}
+const UserMenu: React.FC<UserMenuProps> = ({ currentUser }) => {
   const registerModal = useRegisterModal();
-  const[isOpen,setIsOpen] = useState(false)
-  const toggleMenu =useCallback (() => {
-    setIsOpen((value)=>(!value))
-  },[])
+  const loginModal = useLoginModal();
+  const [isOpen, setIsOpen] = useState(false);
+  const toggleMenu = useCallback(() => {
+    setIsOpen((value) => !value);
+  }, []);
   return (
-    <div className='relative'>
-        <div className='flex flex-row items-center gap-3'>
-            <div
-            onClick={()=>{}}
-            className='hidden
+    <div className="relative">
+      <div className="flex flex-row items-center gap-3">
+        <div
+          onClick={() => {}}
+          className="hidden
             md:block
             text-sm
             font-semibold
@@ -25,11 +31,13 @@ const UserMenu = () => {
             rounded-full
             hover:bg-neutral-100
             transition
-            cursor-pointer'>
-                Airbnb your home
-            </div>
-            <div onClick={toggleMenu}
-            className='p-4
+            cursor-pointer"
+        >
+          Airbnb your home
+        </div>
+        <div
+          onClick={toggleMenu}
+          className="p-4
             md:py-1
             md:px-2
             border-[1px]
@@ -41,15 +49,17 @@ const UserMenu = () => {
             rounded-full
             cursor-pointer
             hover:shadow-md
-            transition'>
-             <AiOutlineMenu/>
-             <div className="hidden md:block">
-                <Avatar/>
-             </div>
-            </div>
+            transition"
+        >
+          <AiOutlineMenu />
+          <div className="hidden md:block">
+            <Avatar />
+          </div>
         </div>
-        {isOpen && (
-          <div className="absolute
+      </div>
+      {isOpen && (
+        <div
+          className="absolute
           rounded-xl
           shadow-md
           w-[40vw]
@@ -58,19 +68,30 @@ const UserMenu = () => {
           overflow-hidden
           right-0
           top-12
-          text-sm">
-            <div className="flex flex-col cursor-pointer">
+          text-sm"
+        >
+          <div className="flex flex-col cursor-pointer">
+            {currentUser ? (
               <>
-              <MenuItem onClick={()=>{}}
-              label ="login"/>
-              <MenuItem onClick={registerModal.onOpen}
-              label ="Sign up"/>
+                <MenuItem onClick={() => {}} label="My trips" />
+                <MenuItem onClick={() => {}} label="My favorites" />
+                <MenuItem onClick={() => {}} label="My reservation" />
+                <MenuItem onClick={() => {}} label="My properties" />
+                <MenuItem onClick={() => {}} label="Airbnb my home" />
+                <hr />
+                <MenuItem onClick={() => signOut()} label="Logout" />
               </>
-            </div>
+            ) : (
+              <>
+                <MenuItem onClick={loginModal.onOpen} label="login" />
+                <MenuItem onClick={registerModal.onOpen} label="Sign up" />
+              </>
+            )}
           </div>
-        )}
+        </div>
+      )}
     </div>
-  )
-}
+  );
+};
 
-export default UserMenu
+export default UserMenu;
