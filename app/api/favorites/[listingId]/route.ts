@@ -14,18 +14,19 @@ export async function POST(
         return NextResponse.error();
     }
     const {listingId} = params;
+    
 
     if(!listingId || typeof listingId !== 'string'){
         throw new Error('Invalid ID')
     }
-    let favouriteIds = [...(currentUser.favoriteIds || [])];
-    favouriteIds.push(listingId)
+    let favoriteIds = [...(currentUser.favoriteIds || [])];
+    favoriteIds.push(listingId)
     const user = await prisma.user.update({
         where:{
            id:currentUser.id 
         },
         data:{
-            favoriteIds:favouriteIds
+            favoriteIds:favoriteIds
         }
     })
     return NextResponse.json(user)

@@ -16,7 +16,7 @@ const HeartButton: React.FC<HeartButtonProps> = ({
     listingId,
     currentUser
   })
- 
+ console.log(listingId)
   return (
     <div
       onClick={toggleFavorite}

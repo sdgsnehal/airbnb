@@ -28,12 +28,13 @@ const toggleFavorite = useCallback(async(
   if(!currentUser){
     return loginModal.onOpen()
   }
+  console.log('Listing ID:', listingId);
   try{
     let request
     if(hasFavorited){
-      request=()=>axios.delete(`/api/favourites/${listingId}`);
+      request=()=>axios.delete(`/api/favorites/${listingId}`);
     }else{
-      request =()=>axios.post(`/api/favourites/${listingId}`)
+      request =()=>axios.post(`/api/favorites/${listingId}`)
     }
     await request();
     router.refresh();

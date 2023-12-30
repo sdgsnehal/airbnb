@@ -7,11 +7,11 @@ import getCurrentUser from "./actions/getCurrentUser";
 
 
 export default async function Home() {
-  const listings = await getListings()
+  const listing = await getListings()
   const currentUser = await getCurrentUser()
 
 
-  if(listings.length ===0){
+  if(listing.length ===0){
     return (
       <ClientOnly>
         <EmptyState showReset/>
@@ -31,7 +31,7 @@ export default async function Home() {
         xl:grid-cols-5
         2xl:grid-cols-6
         gap-8">
-          {listings.map((listings)=>{
+          {listing.map((listings)=>{
             return (
               <ListingCard
               currentUser={currentUser}
