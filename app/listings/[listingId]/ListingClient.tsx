@@ -5,7 +5,7 @@ import ListingHead from "@/app/components/listings/ListingHead";
 import ListingInfo from "@/app/components/listings/ListingInfo";
 import ListingReservation from "@/app/components/listings/ListingReservation";
 import { categories } from "@/app/components/navbar/Categories";
-import { SafeUser, safeListings } from "@/app/types";
+import { SafeUser, safeListings, safeReservation } from "@/app/types";
 import { Reservation } from "@prisma/client";
 import axios from "axios";
 import { differenceInCalendarDays, eachDayOfInterval } from "date-fns";
@@ -13,6 +13,7 @@ import { useRouter } from "next/navigation";
 import { list } from "postcss";
 
 import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Range } from "react-date-range";
 import toast from "react-hot-toast";
 const initialDateRange = {
   startDate: new Date(),
@@ -20,7 +21,7 @@ const initialDateRange = {
   key: "selection",
 };
 interface ListingClientProps {
-  reservation?: Reservation[];
+  reservation?: safeReservation[];
   listing: safeListings & {
     user: SafeUser;
   };
@@ -47,14 +48,14 @@ const ListingClient: React.FC<ListingClientProps> = ({
   }, [reservation]);
   const [isLoading, setIsloading] = useState(false);
   const [totalPrice, setTotalPrice] = useState(listing.price);
-  const [dateRange, setDateRange] = useState(initialDateRange);
+  const [dateRange, setDateRange] = useState<Range>(initialDateRange);
   const onCreateReservation = useCallback(() => {
     if (!currentUser) {
       return loginModal.onOpen();
     }
     setIsloading(true);
     axios
-      .post("/api/reservation", {
+      .post("/api/reservations", {
         totalPrice,
         startDate: dateRange.startDate,
         endDate: dateRange.startDate,
@@ -63,7 +64,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
       .then(() => {
         toast.success("Listing reserved");
         setDateRange(initialDateRange);
-        router.refresh();
+        router.push('/trips');
       })
       .catch(() => {
         toast.error("Something went wrong");
@@ -126,7 +127,7 @@ const ListingClient: React.FC<ListingClientProps> = ({
             dateRange={dateRange}
             onSubmit={onCreateReservation}
             disabled={isLoading}
-            disableDates={disableDates}/>
+            disabledDates={disableDates}/>
 
           </div>
           </div>
