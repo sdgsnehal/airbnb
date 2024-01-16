@@ -18,7 +18,7 @@ import useLoginModal from "../hooks/useLoginModal";
 
 const RegisterModal = () => {
   const registerModal = useRegisterModal();
-  const loginModal= useLoginModal()
+  const loginModal = useLoginModal();
   const [isLoading, setIsLoading] = useState(false);
   const {
     register,
@@ -36,7 +36,9 @@ const RegisterModal = () => {
     axios
       .post("/api/register", data)
       .then(() => {
+        toast.success('success!!')
         registerModal.onClose();
+        loginModal.onOpen();
       })
       .catch((error) => {
         toast.error("Something went wrong");
@@ -45,10 +47,10 @@ const RegisterModal = () => {
         setIsLoading(false);
       });
   };
-  const toggle =useCallback(()=>{
-    registerModal.onClose()
-    loginModal.onOpen()
-  },[loginModal,registerModal])
+  const toggle = useCallback(() => {
+    registerModal.onClose();
+    loginModal.onOpen();
+  }, [loginModal, registerModal]);
   const bodyContent = (
     <div className="flex flex-col gap-4">
       <Heading title="Welcome to Airbnb" subtitle="Create an account" />
@@ -80,40 +82,40 @@ const RegisterModal = () => {
     </div>
   );
   const footerContent = (
-  <div className="flex flex-col gap-4 mt-3">
-    <hr/>
-    <Button 
-    outline
-    label="Continue with Google"
-    icon={FaGoogle}
-    onClick={()=>signIn('google')}
-    />
-    <Button 
-    outline
-    label="Continue with FaGithub"
-    icon={FaGithub}
-    onClick={()=>signIn('github')}
-    />
-    <div className="text-neutral-500
+    <div className="mt-3 flex flex-col gap-4">
+      <hr />
+      <Button
+        outline
+        label="Continue with Google"
+        icon={FaGoogle}
+        onClick={() => signIn("google")}
+      />
+      <Button
+        outline
+        label="Continue with FaGithub"
+        icon={FaGithub}
+        onClick={() => signIn("github")}
+      />
+      <div
+        className="mt-4
     text-center
-    mt-4
-    font-light">
-        <div className="justify-center flex flex-row items-center gap-2">
-            <div>
-            Already have an account
-            </div>
-            <div 
+    font-light
+    text-neutral-500"
+      >
+        <div className="flex flex-row items-center justify-center gap-2">
+          <div>Already have an account</div>
+          <div
             onClick={toggle}
-            className="text-neutral-800
-            cursor-pointer
-            hover:underline">
+            className="cursor-pointer
+            text-neutral-800
+            hover:underline"
+          >
             Log in
-            </div>
+          </div>
         </div>
-
+      </div>
     </div>
-
-  </div>);
+  );
   return (
     <Modal
       disabled={isLoading}
