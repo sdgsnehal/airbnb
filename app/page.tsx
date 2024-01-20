@@ -38,9 +38,9 @@ const Home = async ({ searchParams }: HomeProps) => {
           {listing.map((listings:any) => 
              (
               <ListingCard
-                currentUser={currentUser}
                 key={listings.id}
                 data={listings}
+                currentUser={currentUser}
               />
             )
           )}
