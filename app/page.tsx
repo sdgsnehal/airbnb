@@ -35,15 +35,15 @@ const Home = async ({ searchParams }: HomeProps) => {
         xl:grid-cols-5
         2xl:grid-cols-6"
         >
-          {listing.map((listings) => {
-            return (
+          {listing.map((listings:any) => 
+             (
               <ListingCard
                 currentUser={currentUser}
                 key={listings.id}
                 data={listings}
               />
-            );
-          })}
+            )
+          )}
         </div>
       </Container>
     </ClientOnly>
