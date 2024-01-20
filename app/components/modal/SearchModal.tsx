@@ -7,8 +7,11 @@ import { useRouter } from "next/navigation";
 import { useSearchParams } from "next/navigation";
 import { Range } from "react-date-range";
 import dynamic from "next/dynamic";
-import { CountrySelectValue } from "../Inputs/CountrySelect";
+import CountrySelect, { CountrySelectValue } from "../Inputs/CountrySelect";
 import { formatISO } from "date-fns";
+import Heading from "../navbar/Heading";
+import Calendar from "../Inputs/Calendar";
+import Counter from "../Inputs/Counter";
 enum STEPS {
   LOCATION = 0,
   DATE = 1,
@@ -96,15 +99,70 @@ const SearchModal = () => {
         return undefined
     }
     return 'Back'
-  },[])
-  let bodyContent
+  },[step])
+  let bodyContent = (
+    <div className="flex flex-col gap-8">
+      <Heading
+      title="Where do you wnanna go?"
+      subtitle="Find the perfect location"/>
+      <CountrySelect
+      value={location}
+      onChange={(value)=>
+      setLocation(value as CountrySelectValue)}
+      />
+      <hr/>
+      <Map center={location?.latlng}/>
+
+    </div>
+  )
+  if(step === STEPS.DATE){
+    bodyContent =(
+      <div className="flex flex-col gap-8">
+        <Heading 
+        title="When do you plan to go"
+        subtitle="Make sure everyone is free"/>
+        <Calendar
+        value={dateRange}
+        onChange={(value)=>setDateRange(value.selection)}/>
+
+      </div>
+    )
+  }
+  if(step === STEPS.INFO){
+    bodyContent =(
+      <div className=" flex flex-col gap-8">
+        <Heading
+        title="More information"
+        subtitle="Finc your perfect place"/>
+        <Counter
+        title="Guests"
+        subtitle="How many guets are coming?"
+        value={guestCount}
+        onChange={(value)=>setGuestCount(value)}/>
+        <Counter
+        title="Rooms"
+        subtitle="How many Rooms do you need?"
+        value={roomCount}
+        onChange={(value)=>setRoomCount(value)}/>
+        <Counter
+        title="Bathrooms"
+        subtitle="How many Bathrooms do you need"
+        value={bathroomCount}
+        onChange={(value)=>setBathroomCount(value)}/>
+
+      </div>
+    )
+  }
   return (
     <Modal
       isOpen={searchModal.isOpen}
       onClose={searchModal.onClose}
-      onSubmit={searchModal.onOpen}
+      onSubmit={onSubmit}
       title="Filters"
-      actionLabel="Search"
+      actionLabel={actionLabel}
+      secondaryActionLabel={secondaryActionLabel}
+      secondaryAction={step === STEPS.LOCATION ? undefined : onBack}
+      body={bodyContent}
     />
   );
 };
