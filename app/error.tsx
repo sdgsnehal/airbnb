@@ -9,7 +9,7 @@ import EmptyState from "./components/EmptyState";
  }) =>{
     useEffect(()=>{
      console.log(error)   
-    },[]);
+    },[error]);
     return (
         <EmptyState title="Uh oh"
         subtitle="Something went wrong"/>

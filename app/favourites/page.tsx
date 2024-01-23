@@ -4,9 +4,9 @@ import getCurrentUser from "../actions/getCurrentUser";
 import getFavoriteListings from "../actions/getFavoriteListing";
 import FavoritesClient from "./FavoritesClient";
 const ListingPage = async ()=> {
-    const listing = await getFavoriteListings();
+    const listings = await getFavoriteListings();
     const currentUser = await getCurrentUser();
-    if(listing.length === 0){
+    if(listings.length === 0){
     return (
         <ClientOnly>
           <EmptyState
@@ -17,7 +17,7 @@ const ListingPage = async ()=> {
     return (
         <ClientOnly>
             <FavoritesClient
-            listing={listing}
+            listings={listings}
             currentUser={currentUser}/>
 
         </ClientOnly>

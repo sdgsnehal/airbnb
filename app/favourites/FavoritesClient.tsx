@@ -6,12 +6,12 @@ import Heading from "../components/navbar/Heading";
 import { SafeUser, safeListings } from "../types";
 
 interface FavoritesClientProps {
-  listing: safeListings[];
+  listings: safeListings[];
   currentUser?: SafeUser | null;
 }
 
 const FavoritesClient: React.FC<FavoritesClientProps> = ({
-  listing,
+  listings,
   currentUser,
 }) => {
   return (
@@ -29,7 +29,7 @@ const FavoritesClient: React.FC<FavoritesClientProps> = ({
         xl:grid-cols-5
         2xl:grid-cols-6"
       >
-        {listing.map((listing) => (
+        {listings.map((listing) => (
           <ListingCard
             currentUser={currentUser}
             key={listing.id}
