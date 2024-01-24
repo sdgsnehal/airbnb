@@ -9,7 +9,7 @@ import toast from "react-hot-toast";
 import { error } from "console";
 import ListingCard from "../components/listings/ListingCard";
 interface TripsClientProps {
-  reservations: safeReservation;
+  reservations: safeReservation[];
   currentUser?: SafeUser | null;
 }
 
@@ -19,6 +19,7 @@ const TripsClient: React.FC<TripsClientProps> = ({
 }) => {
   const router = useRouter();
   const [deletingId, setDeletingId] = useState("");
+  console.log(reservations)
   const onCancel = useCallback(
     (id: string) => {
       setDeletingId(id);

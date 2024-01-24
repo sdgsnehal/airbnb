@@ -17,6 +17,7 @@ const TripsPage = async()=>{
     const reservations = await getResevations({
         userId:currentUser.id
     })
+   
     if(reservations.length === 0){
         return (
             <ClientOnly>
